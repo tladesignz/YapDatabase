@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * ```
  * defaultSerializer = ^(NSString *collection, NSString *key, id object){
- *     return [NSKeyedArchiver archivedDataWithRootObject:object];
+ *     return [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:nil];
  * };
  * defaultDeserializer = ^(NSString *collection, NSString *key, NSData *data) {
  *     return [NSKeyedUnarchiver unarchiveObjectWithData:data];
@@ -81,7 +81,7 @@ typedef NSData * __nonnull (^YapDatabaseSerializer)(NSString *collection, NSStri
  *
  * ```
  * defaultSerializer = ^(NSString *collection, NSString *key, id object){
- *     return [NSKeyedArchiver archivedDataWithRootObject:object];
+ *     return [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:nil];
  * };
  * defaultDeserializer = ^(NSString *collection, NSString *key, NSData *data) {
  *     return [NSKeyedUnarchiver unarchiveObjectWithData:data];

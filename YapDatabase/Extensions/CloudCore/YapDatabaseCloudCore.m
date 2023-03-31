@@ -114,7 +114,7 @@ NSString *const YapDatabaseCloudCoreDefaultPipelineName = @"default";
 + (YDBCloudCoreOperationSerializer)defaultOperationSerializer
 {
 	return ^ NSData* (YapDatabaseCloudCoreOperation *operation){
-		return [NSKeyedArchiver archivedDataWithRootObject:operation];
+		return [NSKeyedArchiver archivedDataWithRootObject:operation requiringSecureCoding:NO error:nil];
 	};
 }
 

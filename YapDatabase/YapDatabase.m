@@ -209,7 +209,7 @@ static YDBLogHandler logHandler = nil;
 + (YapDatabaseSerializer)defaultSerializer
 {
 	return ^ NSData* (NSString __unused *collection, NSString __unused *key, id object){
-		return [NSKeyedArchiver archivedDataWithRootObject:object];
+		return [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:nil];
 	};
 }
 
@@ -269,7 +269,7 @@ static YDBLogHandler logHandler = nil;
 		}
 		else
 		{
-			return [NSKeyedArchiver archivedDataWithRootObject:object];
+			return [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:nil];
 		}
 	};
 }

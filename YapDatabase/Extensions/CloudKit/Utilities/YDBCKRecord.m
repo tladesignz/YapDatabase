@@ -29,75 +29,18 @@
 #if TARGET_OS_IOS
 	
 	// iOS only
-	//
-	// I *know* this bug was fixed in iOS 9.
-	// I *think* it might have been fixed in iOS 8.X (where X is definitely > 0),
-	// I just don't know exactly what the value of X is.
 	
-	#ifndef __IPHONE_9_0
-	#define __IPHONE_9_0 90000
-	#endif
-	
-	#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_9_0
-	
-		BOOL isIOS9orLater = YES;
-	
-	#else
-	
-		NSOperatingSystemVersion ios9_0_0 = (NSOperatingSystemVersion){9, 0, 0};
-		BOOL isIOS9orLater = [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:ios9_0_0];
-	
-	#endif
-	
-	if (isIOS9orLater)
-	{
-		// iOS 9+
-		return [self copy];
-	}
-	else
-	{
-		// iOS 8.X
-		NSData *archive = [NSKeyedArchiver archivedDataWithRootObject:self];
-		return [NSKeyedUnarchiver unarchiveObjectWithData:archive];
-	}
-	
+	return [self copy];
+
 #elif !TARGET_OS_EMBEDDED
 	
 	// Mac OS X
-	//
-	// I *know* this bug was fixed in 10.11.
-	// It may have been fixed much earlier than this, but I have no way of testing it.
 	
-	#ifndef __MAC_10_11
-	#define __MAC_10_11 101100
-	#endif
-	
-	#if __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_11
-	
-		BOOL isMacOSX10_11orLater = YES;
-	
-	#else
-	
-		NSOperatingSystemVersion macosx10_11_0 = (NSOperatingSystemVersion){10, 11, 0};
-		BOOL isMacOSX10_11orLater = [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:macosx10_11_0];
-	
-	#endif
-	
-	if (isMacOSX10_11orLater)
-	{
-		// Mac OS X 10.11+
-		return [self copy];
-	}
-	else
-	{
-		// Mac OS X 10.10.X and below
-		NSData *archive = [NSKeyedArchiver archivedDataWithRootObject:self];
-		return [NSKeyedUnarchiver unarchiveObjectWithData:archive];
-	}
-	
+	return [self copy];
+
 #else
 	
-	NSData *archive = [NSKeyedArchiver archivedDataWithRootObject:self];
+	NSData *archive = [NSKeyedArchiver archivedDataWithRootObject:self requiringSecureCoding:NO error:nil];
 	return [NSKeyedUnarchiver unarchiveObjectWithData:archive];
 
 #endif
@@ -121,7 +64,7 @@
 	if (record == nil) return nil;
 	
 	YDBCKRecord *recordWrapper = [[YDBCKRecord alloc] initWithRecord:record];
-	return [NSKeyedArchiver archivedDataWithRootObject:recordWrapper];
+	return [NSKeyedArchiver archivedDataWithRootObject:recordWrapper requiringSecureCoding:NO error:nil];
 }
 
 /**
@@ -133,7 +76,7 @@
 + (CKRecord *)deserializeRecord:(NSData *)data
 {
 	if (data)
-		return [NSKeyedUnarchiver unarchiveObjectWithData:data];
+		return [NSKeyedUnarchiver unarchivedObjectOfClass:CKRecord.class fromData:data error:nil];
 	else
 		return nil;
 }
