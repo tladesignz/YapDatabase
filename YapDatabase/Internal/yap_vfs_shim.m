@@ -548,7 +548,7 @@ done:
  * Invoke this method to unregister the yap_vfs shim with the sqlite system.
  * Be sure you don't do this until you're truely done using it.
  *
- * @param vfs
+ * @param vfs_in_out
  *   The previous output from yap_vfs_shim_register.
  *   This memory will be freed within this method, and the pointer will be set to NULL.
  *
